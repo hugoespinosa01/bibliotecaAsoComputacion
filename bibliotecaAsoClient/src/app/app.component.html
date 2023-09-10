@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+  <a class="navbar-brand" href="/"
+    ><i-tabler name="book-filled" style="width: 30px"></i-tabler> Biblioteca
+    AEICC</a
+  >
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNavDropdown"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/']"
+          ><i-tabler name="books"></i-tabler> Libros</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/libros/agregar']"
+          ><i-tabler name="plus"></i-tabler> Añadir libros</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container p-4">
+  <router-outlet></router-outlet>
+</div>
+
+<footer class="bg-dark py-5 mt-3">
+  <div class="container text-light text-center">
+    <h4 class="mb-3 text-white">Hecho por Hugo Espinosa</h4>
+    <small class="text-white-50">&copy; Derechos de autor de AEICC. Todos los derechos reservados</small>
+  </div>
+</footer>

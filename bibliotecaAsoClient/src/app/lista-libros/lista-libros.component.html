@@ -1,0 +1,214 @@
+<div class="row mb-3">
+  <div class="col-10">
+    <div class="card mb-3">
+      <div class="card-header">Filtros de búsqueda</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="autor">Título</label>
+              <input
+                type="text"
+                name="filterPost"
+                class="form-control"
+                [(ngModel)]="filterPost"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="autor">Autor</label>
+              <input
+                type="text"
+                name="filterPost"
+                class="form-control"
+                [(ngModel)]="filterByAutor"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="autor">Categoría</label>
+              <select
+                class="form-control"
+                name="categoria"
+                [(ngModel)]="filterByCategoria"
+              >
+                <option></option>
+                <option *ngFor="let catalogo of catalogos">
+                  {{ catalogo.descripcion }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-2">
+    <div class="card mb-3" style="height: 180px">
+      <div class="card-header">Vista</div>
+      <div class="card-body">
+        <a
+          class="btn btn-secondary btn-sm btn-block"
+          (click)="cambiarVista('grid')"
+        >
+          <i-tabler name="layout-grid"></i-tabler>
+        </a>
+        <a
+          class="btn btn-secondary btn-sm btn-block"
+          (click)="cambiarVista('list')"
+        >
+          <i-tabler name="layout-list"></i-tabler>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="vistaGrid">
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-dark text-white">
+        <th scope="col">Título</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Categoría</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let libro of libros
+            | filter : filterPost
+            | filterByAutor : filterByAutor
+            | filterByCategoria : filterByCategoria
+            | paginate : { itemsPerPage: 6, currentPage: p }
+        "
+      >
+        <th scope="row">{{ libro.titulo }}</th>
+        <td>{{ libro.autor }}</td>
+        <td>{{ libro.categoria }}</td>
+        <td>
+          <div class="row">
+            <a
+              class="btn btn-primary mr-2 btn-sm"
+              [routerLink]="['/libros/editar', libro.id]"
+            >
+              <i-tabler name="pencil"></i-tabler>
+            </a>
+            <a
+              class="btn btn-info mr-2 btn-sm"
+              [routerLink]="['/libros/consultar', libro.id]"
+            >
+              <i-tabler name="search"></i-tabler>
+            </a>
+            <a
+              class="btn btn-success mr-2 btn-sm"
+              (click)="descargarLibro(libro.archivo, libro.titulo)"
+            >
+              <i-tabler name="download"></i-tabler>
+            </a>
+            <button
+              type="button"
+              href="#"
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              data-bs-original-title="Eliminar"
+              (click)="borrarLibro(libro.archivo)"
+            >
+              <i-tabler name="trash-filled"></i-tabler>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row" *ngIf="!vistaGrid">
+  <div
+    class="col-md-4"
+    *ngFor="
+      let libro of libros
+        | filter : filterPost
+        | filterByAutor : filterByAutor
+        | filterByCategoria : filterByCategoria
+        | paginate : { itemsPerPage: 6, currentPage: p }
+    "
+  >
+    <div class="card mb-3">
+      <h3 class="card-header">{{ libro.titulo }}</h3>
+      <div class="card-body text-center">
+        <h5 class="card-title">
+          <i-tabler name="user"></i-tabler> {{ libro.autor }}
+        </h5>
+      </div>
+      <pdf-viewer
+        [show-all]="false"
+        [page]="1"
+        [render-text]="false"
+        [src]="libro.portada"
+        [original-size]="false"
+        [autoresize]="true"
+        style="display: block; min-height: 500px; min-width: 343px"
+      ></pdf-viewer>
+      <div class="card-body">
+        <p
+          class="card-text"
+          style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis"
+        >
+          {{ libro.descripcion }}
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <i-tabler name="file-info"></i-tabler> {{ libro.num_paginas }} páginas
+        </li>
+        <li class="list-group-item">
+          <i-tabler name="category"></i-tabler> {{ libro.categoria }}
+        </li>
+      </ul>
+      <div class="card-body text-center">
+        <a
+          class="btn btn-primary mr-2 btn-sm"
+          [routerLink]="['/libros/editar', libro.id]"
+        >
+          <i-tabler name="pencil"></i-tabler>
+        </a>
+        <a
+          class="btn btn-info mr-2 btn-sm"
+          [routerLink]="['/libros/consultar', libro.id]"
+        >
+          <i-tabler name="search"></i-tabler>
+        </a>
+        <a
+          class="btn btn-success mr-2 btn-sm"
+          (click)="descargarLibro(libro.archivo, libro.titulo)"
+        >
+          <i-tabler name="download"></i-tabler>
+        </a>
+        <button
+          type="button"
+          href="#"
+          class="btn btn-danger btn-sm"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          data-bs-original-title="Eliminar"
+          (click)="borrarLibro(libro.archivo)"
+        >
+          <i-tabler name="trash-filled"></i-tabler>
+        </button>
+      </div>
+      <div class="card-footer text-muted">
+        <i-tabler name="clock-hour-4"></i-tabler> {{ libro.fecha_creacion }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-center mt-3">
+  <pagination-controls
+    (pageChange)="p = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+  ></pagination-controls>
+</div>

@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center mt-3 mb-3">
+        {{ edit ? "Actualizar libro" : "Añadir un nuevo libro" }}
+      </h1>
+    </div>
+  </div>
+  <div class="col-md-6 offset-md-3 mt-3 mb-5">
+    <div class="card">
+      <div class="card-body">
+        <form action="" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="titulo">Título</label>
+            <input
+              type="text"
+              name="titulo"
+              [(ngModel)]="libro.titulo"
+              class="form-control"
+              id="titulo"
+              placeholder="Título"
+            />
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              class="form-control"
+              [(ngModel)]="libro.descripcion"
+              id="autor"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="autor">Categoría</label>
+            <select
+              class="form-control"
+              name="categoria"
+              [(ngModel)]="libro.categoria"
+            >
+            <option></option>
+              <option *ngFor="let catalogo of catalogos">
+                {{ catalogo.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="autor">Autor</label>
+            <input
+              type="text"
+              name="autor"
+              class="form-control"
+              [(ngModel)]="libro.autor"
+            />
+          </div>
+          <div class="form-group">
+            <label for="autor">Número de páginas</label>
+            <input
+              type="number"
+              name="num_paginas"
+              class="form-control"
+              [(ngModel)]="libro.num_paginas"
+            />
+          </div>
+          <div class="form-group">
+            <label for="autor">Archivo</label>
+            <input
+              type="file"
+              accept=".pdf"
+              class="form-control"
+              (change)="onFileChange($event)"
+            />
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <a
+                type="button"
+                class="btn btn-secondary btn-block"
+                [routerLink]="['/libros']"
+              >
+              <i-tabler name="chevron-left" style="width: 16px;"></i-tabler>
+               REGRESAR
+              </a>
+            </div>
+            <div class="col-6">
+              <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                (click)="edit ? actualizarLibro() : guardarLibro()"
+              >
+              <i-tabler name="send" style="width: 16px;"></i-tabler>
+                  ENVIAR
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
